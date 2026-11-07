@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Log In - TrekSync{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-badge"><span class="ms">explore</span></div>
+            <h2>Welcome Back</h2>
+            <p>Sign in to manage your bookings and treks</p>
+        </div>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+
+            <div class="auth-body">
+                <!-- Email -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.email.id }}">{{ form.email.label.text }}</label>
+                    {% if form.email.errors %}
+                        {{ form.email(class="field-control is-invalid", placeholder="name@example.com") }}
+                        {% for error in form.email.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.email(class="field-control", placeholder="name@example.com") }}
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.password.id }}">{{ form.password.label.text }}</label>
+                    {% if form.password.errors %}
+                        {{ form.password(class="field-control is-invalid", placeholder="Enter password") }}
+                        {% for error in form.password.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.password(class="field-control", placeholder="Enter password") }}
+                    {% endif %}
+                </div>
+
+                <!-- Remember me -->
+                <div class="form-check">
+                    {{ form.remember_me() }}
+                    <label for="{{ form.remember_me.id }}">{{ form.remember_me.label.text }}</label>
+                    {% if form.remember_me.errors %}
+                        {% for error in form.remember_me.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    {{ form.submit.label.text }}<span class="ms">arrow_forward</span>
+                </button>
+
+                <div class="auth-alt">
+                    Don&rsquo;t have an account? <a href="/auth/register">Sign Up</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

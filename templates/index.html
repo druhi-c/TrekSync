@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}TrekSync - A Trekking Management System{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-contours" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" fill="none" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-100 200C300 150 450 350 800 220C1150 90 1300 400 1600 320" stroke="#006948" stroke-dasharray="4 6" stroke-width="1.2"/>
+            <path d="M-100 260C350 210 500 410 850 280C1200 150 1350 460 1650 380" stroke="#6d7a72" stroke-width="0.8"/>
+            <path d="M-100 320C400 270 550 470 900 340C1250 210 1400 520 1700 440" stroke="#006948" stroke-dasharray="2 4" stroke-width="0.75"/>
+            <path d="M-100 380C450 330 600 530 950 400C1300 270 1450 580 1750 500" stroke="#6d7a72" stroke-width="0.8"/>
+        </svg>
+    </div>
+    <div class="container">
+        <div class="hero-grid">
+            <!-- Copy & CTAs -->
+            <div class="hero-copy">
+                <span class="eyebrow-chip"><span class="ms">explore</span>Trek Management Platform</span>
+                <h1 class="display-hero hero-title">
+                    Every adventure,<br>
+                    <span class="accent">perfectly organized</span>
+                </h1>
+                <p class="lede" style="max-width: 560px;">
+                    TrekSync enables administrators, staff, and trekkers to efficiently manage trekking activities, organize schedules, control slots, and handle bookings through a clean, unified role-based interface.
+                </p>
+                <div class="hero-cta">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'Admin' %}
+                            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-primary btn-lg"><span class="ms">speed</span>Go to Dashboard</a>
+                        {% elif current_user.role == 'Staff' %}
+                            <a href="{{ url_for('staff.dashboard') }}" class="btn btn-primary btn-lg"><span class="ms">speed</span>Go to Dashboard</a>
+                        {% else %}
+                            <a href="{{ url_for('trekker.dashboard') }}" class="btn btn-primary btn-lg"><span class="ms">hiking</span>Go to Dashboard</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg"><span class="ms">login</span>Log In</a>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline btn-lg"><span class="ms">person_add</span>Sign Up</a>
+                    {% endif %}
+                </div>
+                <div class="dest-row" style="justify-content: flex-start;">
+                    <span class="dest-badge"><span class="ms">public</span>Alps, Rockies &amp; Himalayas</span>
+                    <span class="dest-badge"><span class="ms green">verified</span>Atomic slot locking</span>
+                </div>
+            </div>
+
+            <!-- Visual showcase -->
+            <div class="hero-visual">
+                <div class="vis-card">
+                    <div class="vis-strip">
+                        <span class="live"><span class="vis-dot"></span>GPS Orbit Connected</span>
+                        <span>45.8326&deg; N</span>
+                    </div>
+                    <div class="vis-scene">
+                        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Alpine peak illustration">
+                            <rect width="400" height="300" fill="transparent"/>
+                            <!-- back range -->
+                            <path d="M0 300 L90 140 L150 210 L220 100 L300 220 L340 160 L400 300 Z" fill="#b9d6c8"/>
+                            <!-- front range -->
+                            <path d="M0 300 L70 200 L130 250 L210 150 L280 240 L330 190 L400 300 Z" fill="#5f9379"/>
+                            <!-- snow caps -->
+                            <path d="M210 150 L196 170 L205 168 L212 176 L222 164 L228 172 L224 158 Z" fill="#ffffff" opacity="0.9"/>
+                            <path d="M70 200 L58 218 L67 215 L73 222 L83 210 L88 217 Z" fill="#ffffff" opacity="0.75"/>
+                            <!-- contour lines -->
+                            <path d="M-20 240 C 80 210, 170 265, 260 235 S 430 250, 460 225" stroke="#0f5132" stroke-width="1.4" fill="none" stroke-dasharray="5 7" opacity="0.35"/>
+                            <path d="M-20 265 C 90 240, 180 285, 270 260 S 430 272, 460 252" stroke="#0f5132" stroke-width="1.2" fill="none" opacity="0.22"/>
+                            <!-- sun -->
+                            <circle cx="330" cy="70" r="26" fill="#e9a23b" opacity="0.85"/>
+                            <!-- trail -->
+                            <path d="M20 300 C 90 275, 150 292, 205 268 C 250 250, 285 262, 330 244" stroke="#f8fafc" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="1 10" opacity="0.85"/>
+                        </svg>
+                        <span class="vis-pill top"><span class="ms">terrain</span>Summit Ready &bull; 4,810m</span>
+                        <span class="vis-pill bottom"><span class="vis-dot"></span>Live GPS Sync Active</span>
+                    </div>
+                    <div class="telemetry">
+                        <div><p class="overline">Treks live</p><strong>32</strong></div>
+                        <div><p class="overline">Guides</p><strong class="accent">14</strong></div>
+                        <div><p class="overline">Slots open</p><strong>210</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section section-soft">
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow-chip"><span class="ms">polyline</span>Platform Features</span>
+            <h2 class="h-lg mt-2">Designed for smooth adventure planning</h2>
+            <p class="lede">Everything administrators, staff, and trekkers need to run safe, punctual treks &mdash; from discovery to departure.</p>
+        </div>
+        <div class="grid grid-3">
+            <div class="card feature-card">
+                <span class="icon-chip chip-green"><span class="ms">search</span></span>
+                <h3 class="h-sm">Explore Treks</h3>
+                <p>Browse open trekking adventures with real-time slot availability, difficulty levels, duration, and instant location search.</p>
+                <div class="feature-foot">
+                    <span class="mini-chip"><span class="ms">route</span>Real-time slots</span>
+                    <span class="ms muted">chevron_right</span>
+                </div>
+            </div>
+            <div class="card feature-card">
+                <span class="icon-chip chip-slate"><span class="ms">settings</span></span>
+                <h3 class="h-sm">Manage Trek Operations</h3>
+                <p>Complete operational workflows for administrators and staff to schedule treks, update status, and manage participant capacity.</p>
+                <div class="feature-foot">
+                    <span class="mini-chip slate"><span class="ms">radar</span>Staff workflows</span>
+                    <span class="ms muted">chevron_right</span>
+                </div>
+            </div>
+            <div class="card feature-card">
+                <span class="icon-chip chip-amber"><span class="ms">confirmation_number</span></span>
+                <h3 class="h-sm">Easy Booking Management</h3>
+                <p>Streamlined one-click trek booking with atomic slot deduction, duplicate prevention, and flexible booking cancellation.</p>
+                <div class="feature-foot">
+                    <span class="mini-chip amber"><span class="ms">verified</span>One-click booking</span>
+                    <span class="ms muted">chevron_right</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROLES -->
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow-chip"><span class="ms">groups</span>Built for the Entire Team</span>
+            <h2 class="h-lg mt-2">Role responsibilities</h2>
+            <p class="lede">Role-based access control tailored to each workflow, from platform oversight to the trail.</p>
+        </div>
+        <div class="grid grid-3">
+            <!-- Administrator -->
+            <div class="card role-card">
+                <div class="role-accent accent-slate"></div>
+                <div class="role-body">
+                    <div class="role-top">
+                        <span class="eyebrow-chip">Operations Control</span>
+                        <span class="ms">shield_person</span>
+                    </div>
+                    <h3 class="h-md">Administrator</h3>
+                    <p class="muted" style="margin: 0;">Responsible for overall platform management, creating new treks, editing parameters, approving staff registrations, and auditing all booking records.</p>
+                    <ul class="role-list">
+                        <li><span class="ms">check_circle</span>Trek CRUD with capacity controls</li>
+                        <li><span class="ms">check_circle</span>Staff approval &amp; access toggles</li>
+                        <li><span class="ms">check_circle</span>System-wide booking audit</li>
+                    </ul>
+                    <div class="role-foot">
+                        <a href="/auth/login" class="btn btn-outline btn-block"><span class="ms">arrow_forward</span>Explore Admin Console</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Staff -->
+            <div class="card role-card">
+                <div class="role-accent accent-primary"></div>
+                <div class="role-body">
+                    <div class="role-top">
+                        <span class="eyebrow-chip">Field Execution</span>
+                        <span class="ms text-primary-ink">sports_score</span>
+                    </div>
+                    <h3 class="h-md">Staff</h3>
+                    <p class="muted" style="margin: 0;">Oversees assigned trekking operations, updates available participant slots, transitions trek status (Open, Ongoing, Completed), and manages participant rosters.</p>
+                    <ul class="role-list">
+                        <li><span class="ms">check_circle</span>Status &amp; slot management</li>
+                        <li><span class="ms">check_circle</span>Participant rosters</li>
+                        <li><span class="ms">check_circle</span>Strict ownership isolation</li>
+                    </ul>
+                    <div class="role-foot">
+                        <a href="/auth/login" class="btn btn-primary btn-block"><span class="ms">arrow_forward</span>View Guide Interface</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Trekker -->
+            <div class="card role-card">
+                <div class="role-accent accent-teal"></div>
+                <div class="role-body">
+                    <div class="role-top">
+                        <span class="eyebrow-chip">Expedition Guest</span>
+                        <span class="ms" style="color: var(--teal);">person_pin</span>
+                    </div>
+                    <h3 class="h-md">Trekker</h3>
+                    <p class="muted" style="margin: 0;">Discovers upcoming open treks, searches and filters by location or difficulty, reserves spots instantly, and manages personal booking history.</p>
+                    <ul class="role-list">
+                        <li class="teal"><span class="ms">check_circle</span>Search &amp; difficulty filters</li>
+                        <li class="teal"><span class="ms">check_circle</span>Instant booking, zero friction</li>
+                        <li class="teal"><span class="ms">check_circle</span>One-click cancellation</li>
+                    </ul>
+                    <div class="role-foot">
+                        <a href="/auth/register" class="btn btn-outline btn-block"><span class="ms">arrow_forward</span>Join as a Trekker</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="section section-soft">
+    <div class="container">
+        <div class="card card-pad-lg text-center">
+            <h2 class="h-md"><span class="ms" style="color: var(--primary);">mountains</span> Trek Destinations &amp; Availability</h2>
+            <p class="muted mt-1" style="max-width: 720px; margin-left: auto; margin-right: auto;">TrekSync manages iconic Himalayan trekking routes with real-time slot tracking, difficulty ratings, and automated booking rosters.</p>
+            <div class="dest-row mt-3">
+                <span class="dest-badge"><span class="ms">location_on</span>Annapurna Circuit</span>
+                <span class="dest-badge"><span class="ms">location_on</span>Everest Base Camp</span>
+                <span class="dest-badge"><span class="ms amber">bar_chart</span>Easy, Moderate &amp; Hard Treks</span>
+                <span class="dest-badge"><span class="ms green">ticket</span>Instant Slot Reservation</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+    <div class="container">
+        <div class="cta-banner">
+            <svg class="cta-art" width="420" height="280" viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M240 40L440 300H40L240 40Z" stroke="#85f8c4" stroke-width="4"/>
+                <path d="M340 120L490 300H190L340 120Z" stroke="#ffffff" stroke-width="2"/>
+            </svg>
+            <div class="cta-inner">
+                <span class="cta-eyebrow"><span class="vis-dot"></span>Expedition Season 2026</span>
+                <h2 class="h-lg">Ready to plan your next expedition?</h2>
+                <p>Create your account, join the community of trekkers, and start reserving spots on the world&rsquo;s most iconic routes.</p>
+                <div class="d-flex gap-2 flex-wrap mt-3">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('trekker.dashboard') }}" class="btn btn-mint btn-lg"><span class="ms">hiking</span>Explore treks</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-mint btn-lg"><span class="ms">person_add</span>Sign Up free</a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-lg" style="background: transparent; color: var(--inverse-ink); border-color: rgba(238,240,255,0.3);"><span class="ms">login</span>Log In</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

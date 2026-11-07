@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block admin_content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Operations overview</p>
+        <h1 class="h-md">Admin Dashboard</h1>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('admin.create_trek') }}"><span class="ms">add</span>Create trek</a>
+</div>
+
+<div class="grid grid-4">
+    <!-- Treks Count -->
+    <div class="stat-card">
+        <span class="icon-chip chip-green"><span class="ms">terrain</span></span>
+        <p class="overline">Total Treks</p>
+        <div class="stat-value">{{ total_treks }}</div>
+    </div>
+    <!-- Users Count -->
+    <div class="stat-card">
+        <span class="icon-chip chip-slate"><span class="ms">hiking</span></span>
+        <p class="overline">Total Users</p>
+        <div class="stat-value">{{ total_users }}</div>
+    </div>
+    <!-- Staff Count -->
+    <div class="stat-card">
+        <span class="icon-chip chip-amber"><span class="ms">badge</span></span>
+        <p class="overline">Total Staff</p>
+        <div class="stat-value">{{ total_staff }}</div>
+    </div>
+    <!-- Bookings Count -->
+    <div class="stat-card">
+        <span class="icon-chip chip-teal"><span class="ms">confirmation_number</span></span>
+        <p class="overline">Total Bookings</p>
+        <div class="stat-value">{{ total_bookings }}</div>
+    </div>
+</div>
+
+<div class="card card-pad mt-4 d-flex align-center gap-2 flex-wrap">
+    <span class="icon-chip chip-green"><span class="ms">bolt</span></span>
+    <div>
+        <p class="overline mb-1">Quick actions</p>
+        <div class="d-flex gap-1 flex-wrap">
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin.treks') }}"><span class="ms">terrain</span>Manage treks</a>
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin.staff') }}"><span class="ms">badge</span>Approve staff</a>
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin.bookings') }}"><span class="ms">confirmation_number</span>Audit bookings</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

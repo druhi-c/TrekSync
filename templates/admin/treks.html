@@ -1,0 +1,61 @@
+{% extends "admin/base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block admin_content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Catalog</p>
+        <h1 class="h-md">Treks</h1>
+        <p class="muted small mb-0">Create, assign, and maintain trek records.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('admin.create_trek') }}"><span class="ms">add</span>Create trek</a>
+</div>
+
+{% if treks %}
+<div class="table-shell table-scroll">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Dates</th>
+                <th>Capacity</th>
+                <th>Staff</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trek in treks %}
+            <tr>
+                <td class="cell-strong">{{ trek.name }}</td>
+                <td class="table-muted">{{ trek.location }}</td>
+                <td>
+                    {{ trek.start_date.strftime('%d %b %Y') }}
+                    <br><small class="table-muted">to {{ trek.end_date.strftime('%d %b %Y') }}</small>
+                </td>
+                <td>
+                    <span class="mini-chip"><span class="ms">group</span>{{ trek.available_slots }} / {{ trek.max_slots }}</span>
+                </td>
+                <td>{{ trek.assigned_staff.username if trek.assigned_staff else 'Unassigned' }}</td>
+                <td>{{ status_badge(trek.status.value) }}</td>
+                <td>
+                    <div class="table-actions">
+                        <a class="btn btn-outline btn-sm" href="{{ url_for('admin.edit_trek', trek_id=trek.id) }}"><span class="ms">edit</span>Edit</a>
+                        <form class="inline-form" method="post" action="{{ url_for('admin.delete_trek', trek_id=trek.id) }}">
+                            <button class="btn btn-danger btn-sm"><span class="ms">delete</span>Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">terrain</span>
+    No treks yet. Create the first trek to begin.
+</div>
+{% endif %}
+{% endblock %}

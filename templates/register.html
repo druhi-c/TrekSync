@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - TrekSync{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-badge"><span class="ms">person_add</span></div>
+            <h2>Create Account</h2>
+            <p>Join our community and start your adventure</p>
+        </div>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+
+            <div class="auth-body">
+                <!-- Username -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.username.id }}">{{ form.username.label.text }}</label>
+                    {% if form.username.errors %}
+                        {{ form.username(class="field-control is-invalid", placeholder="Enter username") }}
+                        {% for error in form.username.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.username(class="field-control", placeholder="Enter username") }}
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.email.id }}">{{ form.email.label.text }}</label>
+                    {% if form.email.errors %}
+                        {{ form.email(class="field-control is-invalid", placeholder="name@example.com") }}
+                        {% for error in form.email.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.email(class="field-control", placeholder="name@example.com") }}
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.password.id }}">{{ form.password.label.text }}</label>
+                    {% if form.password.errors %}
+                        {{ form.password(class="field-control is-invalid", placeholder="Minimum 8 characters") }}
+                        {% for error in form.password.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.password(class="field-control", placeholder="Minimum 8 characters") }}
+                    {% endif %}
+                </div>
+
+                <!-- Confirm password -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.confirm_password.id }}">{{ form.confirm_password.label.text }}</label>
+                    {% if form.confirm_password.errors %}
+                        {{ form.confirm_password(class="field-control is-invalid", placeholder="Re-enter password") }}
+                        {% for error in form.confirm_password.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.confirm_password(class="field-control", placeholder="Re-enter password") }}
+                    {% endif %}
+                </div>
+
+                <!-- Role -->
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.role.id }}">{{ form.role.label.text }}</label>
+                    {% if form.role.errors %}
+                        {{ form.role(class="field-control is-invalid") }}
+                        {% for error in form.role.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.role(class="field-control") }}
+                    {% endif %}
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    {{ form.submit.label.text }}<span class="ms">arrow_forward</span>
+                </button>
+
+                <div class="auth-alt">
+                    Already have an account? <a href="/auth/login">Log In</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Update Trek - TrekSync{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+    <div class="card card-pad-lg" style="max-width: 640px; width: 100%;">
+        <p class="overline">Field operations</p>
+        <h1 class="h-md">Update {{ trek.name }}</h1>
+        <p class="muted small mt-1">
+            {{ booked_count }} confirmed participant{{ '' if booked_count == 1 else 's' }}. Capacity: {{ trek.max_slots }}.
+        </p>
+
+        <div class="d-flex gap-1 flex-wrap mt-1 mb-3">
+            <span class="mini-chip"><span class="ms">group</span>{{ booked_count }} booked</span>
+            <span class="mini-chip slate"><span class="ms">event_seat</span>{{ trek.available_slots }} open</span>
+            <span class="mini-chip amber"><span class="ms">place</span>{{ trek.location }}</span>
+        </div>
+
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="grid grid-2">
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.available_slots.id }}">{{ form.available_slots.label.text }}</label>
+                    {{ form.available_slots(class="field-control " + ("is-invalid" if form.available_slots.errors else "")) }}
+                    {% for error in form.available_slots.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="{{ form.status.id }}">{{ form.status.label.text }}</label>
+                    {{ form.status(class="field-control " + ("is-invalid" if form.status.errors else "")) }}
+                    {% for error in form.status.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-1 flex-wrap">
+                {{ form.submit(class="btn btn-primary") }}
+                <a class="btn btn-outline" href="{{ url_for('staff.dashboard') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Catalog</p>
+        <h1 class="h-md">{{ heading }}</h1>
+    </div>
+    <a class="btn btn-outline btn-sm" href="{{ url_for('admin.treks') }}"><span class="ms">arrow_back</span>Back to treks</a>
+</div>
+
+<div class="card card-pad-lg">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-grid">
+            {% for field in [form.name, form.location, form.difficulty, form.duration, form.max_slots, form.available_slots, form.start_date, form.end_date, form.status, form.staff_id] %}
+            <div class="field-group">
+                <label class="field-label" for="{{ field.id }}">{{ field.label.text }}</label>
+                {{ field(class="field-control " + ("is-invalid" if field.errors else "") + ("" if field.type not in ['SelectField'] else "")) }}
+                {% for error in field.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <div class="field-group span-2">
+                <label class="field-label" for="{{ form.description.id }}">{{ form.description.label.text }}</label>
+                {{ form.description(class="field-control", rows="4", placeholder="Describe the route, highlights and requirements...") }}
+                {% for error in form.description.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-1 flex-wrap">
+            {{ form.submit(class="btn btn-primary") }}
+            <a class="btn btn-outline" href="{{ url_for('admin.treks') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

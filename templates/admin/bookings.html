@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block admin_content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Audit</p>
+        <h1 class="h-md">Bookings</h1>
+        <p class="muted small mb-0">System-wide booking log, newest first.</p>
+    </div>
+</div>
+
+{% if bookings %}
+<div class="table-shell table-scroll">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Booking</th>
+                <th>Trekker</th>
+                <th>Trek</th>
+                <th>Booked on</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td class="cell-strong">#{{ booking.id }}</td>
+                <td class="d-flex align-center gap-1">
+                    <span class="avatar">{{ booking.user.username[:2]|upper }}</span>
+                    <span>{{ booking.user.username }}</span>
+                </td>
+                <td>{{ booking.trek.name }}</td>
+                <td class="table-muted">{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                <td>{{ status_badge(booking.status.value) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">confirmation_number</span>
+    No bookings yet.
+</div>
+{% endif %}
+{% endblock %}

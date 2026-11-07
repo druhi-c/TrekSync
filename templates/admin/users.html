@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block admin_content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Community</p>
+        <h1 class="h-md">Trekkers</h1>
+        <p class="muted small mb-0">Registered trekker accounts on the platform.</p>
+    </div>
+</div>
+
+{% if trekkers %}
+<div class="table-shell table-scroll">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Access</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trekker in trekkers %}
+            <tr>
+                <td class="d-flex align-center gap-1">
+                    <span class="avatar">{{ trekker.username[:2]|upper }}</span>
+                    <span class="cell-strong">{{ trekker.username }}</span>
+                </td>
+                <td class="table-muted">{{ trekker.email }}</td>
+                <td>{{ status_badge('Active' if trekker.active else 'Deactivated') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">group</span>
+    No trekkers registered.
+</div>
+{% endif %}
+{% endblock %}

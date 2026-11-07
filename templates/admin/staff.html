@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block admin_content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Team</p>
+        <h1 class="h-md">Staff management</h1>
+        <p class="muted small mb-0">Approve staff registrations and control staff access.</p>
+    </div>
+</div>
+
+{% if staff_members %}
+<div class="table-shell table-scroll">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Staff member</th>
+                <th>Email</th>
+                <th>Approval</th>
+                <th>Access</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in staff_members %}
+            <tr>
+                <td class="d-flex align-center gap-1">
+                    <span class="avatar">{{ member.username[:2]|upper }}</span>
+                    <span class="cell-strong">{{ member.username }}</span>
+                </td>
+                <td class="table-muted">{{ member.email }}</td>
+                <td>{{ status_badge('Approved' if member.approved else 'Awaiting approval') }}</td>
+                <td>{{ status_badge('Active' if member.active else 'Deactivated') }}</td>
+                <td>
+                    <div class="table-actions">
+                        {% if not member.approved %}
+                        <form class="inline-form" method="post" action="{{ url_for('admin.approve_staff', user_id=member.id) }}">
+                            <button class="btn btn-primary btn-sm"><span class="ms">how_to_reg</span>Approve</button>
+                        </form>
+                        {% endif %}
+                        <form class="inline-form" method="post" action="{{ url_for('admin.toggle_staff_active', user_id=member.id) }}">
+                            <button class="btn {{ 'btn-danger' if member.active else 'btn-outline' }} btn-sm">
+                                <span class="ms">{{ 'block' if member.active else 'check_circle' }}</span>{{ 'Deactivate' if member.active else 'Reactivate' }}
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">badge</span>
+    No staff registrations found.
+</div>
+{% endif %}
+{% endblock %}

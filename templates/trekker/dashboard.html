@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block title %}Explore Treks - TrekSync{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Discover</p>
+        <h1 class="h-md">Explore open treks</h1>
+        <p class="muted small mb-0">Find your next adventure.</p>
+    </div>
+    <a href="{{ url_for('trekker.bookings') }}" class="btn btn-outline"><span class="ms">receipt_long</span>My bookings</a>
+</div>
+
+<!-- Search / filter -->
+<div class="card card-pad mb-4">
+    <form method="get" class="search-bar">
+        <div class="field-group">
+            <label class="field-label" for="{{ form.query.id }}">{{ form.query.label.text }}</label>
+            {{ form.query(class="field-control", placeholder="Trek name or location") }}
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="{{ form.difficulty.id }}">{{ form.difficulty.label.text }}</label>
+            {{ form.difficulty(class="field-control") }}
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="{{ form.location.id }}">{{ form.location.label.text }}</label>
+            {{ form.location(class="field-control", placeholder="Location") }}
+        </div>
+        <div class="field-group">
+            {{ form.submit(class="btn btn-primary", style="height: 46px;") }}
+        </div>
+    </form>
+</div>
+
+<!-- Trek grid -->
+<div class="grid grid-3">
+    {% for trek in treks %}
+    <div class="card trek-card">
+        <div class="trek-head">
+            <div>
+                <h3 class="h-sm">{{ trek.name }}</h3>
+                <p class="trek-meta"><span class="ms">location_on</span>{{ trek.location }}</p>
+            </div>
+            <span class="difficulty difficulty-{{ trek.difficulty.value }}">{{ trek.difficulty.value }}</span>
+        </div>
+
+        <p class="trek-desc">{{ trek.description or 'No description provided.' }}</p>
+
+        <ul class="trek-facts">
+            <li><span class="label">Dates</span><span>{{ trek.start_date.strftime('%d %b') }} &ndash; {{ trek.end_date.strftime('%d %b %Y') }}</span></li>
+            <li><span class="label">Duration</span><span>{{ trek.duration }} days</span></li>
+            <li><span class="label">Available</span><span>{{ trek.available_slots }} spots</span></li>
+        </ul>
+
+        <div class="trek-foot">
+            {% if trek.id in booked_trek_ids %}
+                <span class="badge badge-green" style="align-self: flex-start;"><span class="ms" style="font-size: 14px;">check_circle</span>Booked</span>
+            {% elif trek.available_slots == 0 %}
+                <span class="badge badge-slate" style="align-self: flex-start;">Full</span>
+            {% else %}
+                <form method="post" action="{{ url_for('trekker.book_trek', trek_id=trek.id) }}">
+                    <button class="btn btn-primary btn-block"><span class="ms">confirmation_number</span>Book trek</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="card empty-state" style="grid-column: 1 / -1;">
+        <span class="ms">search_off</span>
+        No open treks match your search.
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

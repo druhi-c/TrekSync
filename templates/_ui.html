@@ -1,0 +1,16 @@
+{# Shared UI helpers for the TrekSync Alpine design #}
+{% macro status_badge(value) -%}
+  {%- set v = (value.value if value is defined and value.value is defined else value) -%}
+  {%- if v in ['Open', 'Active', 'Approved', 'Paid', 'Booked', 'Completed'] -%}
+    {%- set tone = 'green' -%}
+  {%- elif v in ['Ongoing', 'Started'] -%}
+    {%- set tone = 'teal' -%}
+  {%- elif v in ['Pending', 'Awaiting approval'] -%}
+    {%- set tone = 'amber' -%}
+  {%- elif v in ['Deactivated'] -%}
+    {%- set tone = 'red' -%}
+  {%- else -%}
+    {%- set tone = 'slate' -%}
+  {%- endif -%}
+<span class="badge badge-{{ tone }}">{{ v }}</span>
+{%- endmacro %}

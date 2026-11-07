@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block title %}Participants - TrekSync{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Roster</p>
+        <h1 class="h-md">{{ trek.name }} participants</h1>
+    </div>
+    <a class="btn btn-outline btn-sm" href="{{ url_for('staff.dashboard') }}"><span class="ms">arrow_back</span>Back to dashboard</a>
+</div>
+
+{% if bookings %}
+<div class="table-shell table-scroll">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Trekker</th>
+                <th>Email</th>
+                <th>Booked on</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td class="d-flex align-center gap-1">
+                    <span class="avatar">{{ booking.user.username[:2]|upper }}</span>
+                    <span class="cell-strong">{{ booking.user.username }}</span>
+                </td>
+                <td class="table-muted">{{ booking.user.email }}</td>
+                <td class="table-muted">{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                <td>{{ status_badge(booking.status.value) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">group</span>
+    No participant records yet.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - TrekSync{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="card side-nav">
+        <div class="side-nav-head">
+            <span class="overline"><span class="ms">shield_lock</span>Admin Portal</span>
+            <span class="badge badge-green">HQ</span>
+        </div>
+        <nav class="side-nav-list">
+            <a href="{{ url_for('admin.dashboard') }}" class="side-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                <span class="ms">speed</span><span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin.treks') }}" class="side-link {% if request.endpoint in ['admin.treks', 'admin.create_trek', 'admin.edit_trek'] %}active{% endif %}">
+                <span class="ms">terrain</span><span>Treks</span>
+            </a>
+            <a href="{{ url_for('admin.staff') }}" class="side-link {% if request.endpoint == 'admin.staff' %}active{% endif %}">
+                <span class="ms">badge</span><span>Staff</span>
+            </a>
+            <a href="{{ url_for('admin.users') }}" class="side-link {% if request.endpoint == 'admin.users' %}active{% endif %}">
+                <span class="ms">group</span><span>Users</span>
+            </a>
+            <a href="{{ url_for('admin.bookings') }}" class="side-link {% if request.endpoint == 'admin.bookings' %}active{% endif %}">
+                <span class="ms">confirmation_number</span><span>Bookings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Admin Content Area -->
+    <div>
+        {% block admin_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

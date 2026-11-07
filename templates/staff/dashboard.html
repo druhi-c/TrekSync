@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block title %}Staff Dashboard - TrekSync{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="overline">Field operations</p>
+        <h1 class="h-md">My assigned treks</h1>
+        <p class="muted small mb-0">Manage the treks assigned to you.</p>
+    </div>
+</div>
+
+{% if treks %}
+<div class="grid grid-2">
+    {% for trek in treks %}
+    <div class="card trek-card">
+        <div class="trek-head">
+            <div>
+                <h3 class="h-sm">{{ trek.name }}</h3>
+                <p class="trek-meta"><span class="ms">location_on</span>{{ trek.location }} &middot; {{ trek.difficulty.value }} &middot; {{ trek.duration }} days</p>
+            </div>
+            {{ status_badge(trek.status.value) }}
+        </div>
+
+        <ul class="trek-facts">
+            <li><span class="label">Status</span><span>{{ trek.status.value }}</span></li>
+            <li><span class="label">Dates</span><span>{{ trek.start_date.strftime('%d %b %Y') }} &ndash; {{ trek.end_date.strftime('%d %b %Y') }}</span></li>
+            <li><span class="ms">group</span><span><strong>{{ participant_counts[trek.id] }}</strong> confirmed participants</span></li>
+            <li><span class="ms">event_seat</span><span>{{ trek.available_slots }} of {{ trek.max_slots }} slots open</span></li>
+        </ul>
+
+        <div class="trek-foot">
+            <div class="trek-foot-row">
+                <a class="btn btn-primary btn-sm" href="{{ url_for('staff.edit_trek', trek_id=trek.id) }}"><span class="ms">edit</span>Update trek</a>
+                <a class="btn btn-outline btn-sm" href="{{ url_for('staff.participants', trek_id=trek.id) }}"><span class="ms">list</span>Participants</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">terrain</span>
+    You do not have any assigned treks yet.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TrekSync - Trekking Management System{% endblock %}</title>
+    <!-- Fonts: Space Grotesk (display) + Plus Jakarta Sans (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols (icons) -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- TrekSync Alpine design system -->
+    <link href="{{ url_for('static', filename='css/treksync.css') }}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Mobile nav toggle (pure CSS) -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-input">
+
+    <!-- Navbar -->
+    <header class="nav-shell">
+        <div class="container nav-inner">
+            <a class="brand" href="/">
+                <span class="brand-mark"><span class="ms">explore</span></span>
+                <span>TrekSync</span>
+            </a>
+            <label for="nav-toggle" class="nav-burger" aria-label="Toggle navigation"><span class="ms">menu</span></label>
+            <nav class="nav-menu">
+                <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="/">Home</a>
+                <div class="nav-actions">
+                    {% if current_user.is_authenticated %}
+                        <span class="nav-user">
+                            Welcome, {{ current_user.username }}
+                            <span class="role-chip">{{ current_user.role }}</span>
+                        </span>
+                        <a href="{{ url_for('auth.logout') }}" class="btn btn-danger btn-sm"><span class="ms">logout</span>Log Out</a>
+                    {% else %}
+                        <a href="/auth/login" class="btn btn-ghost"><span class="ms">login</span>Log In</a>
+                        <a href="/auth/register" class="btn btn-primary"><span class="ms">person_add</span>Sign Up</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="page">
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-4" style="max-width: 720px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; gap: 12px;">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category if category != 'error' else 'danger' }}" role="alert">
+                                {% if category == 'success' %}
+                                    <span class="ms">check_circle</span>
+                                {% elif category == 'danger' or category == 'error' %}
+                                    <span class="ms">error</span>
+                                {% elif category == 'warning' %}
+                                    <span class="ms">warning</span>
+                                {% else %}
+                                    <span class="ms">info</span>
+                                {% endif %}
+                                <div>{{ message }}</div>
+                                <button type="button" class="alert-close" aria-label="Close"><span class="ms">close</span></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand"><span class="ms">explore</span><span>TrekSync</span></div>
+                <div class="status-pill mt-1"><span class="vis-dot"></span>All systems operational</div>
+            </div>
+            <div class="footer-copy">&copy; 2026 TrekSync. Adventure awaits.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Dismiss flash alerts
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('.alert-close');
+            if (btn) { btn.closest('.alert').remove(); }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

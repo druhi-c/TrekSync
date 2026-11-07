@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% from "_ui.html" import status_badge %}
+
+{% block title %}My Bookings - TrekSync{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="overline">History</p>
+        <h1 class="h-md">My bookings</h1>
+    </div>
+    <a href="{{ url_for('trekker.dashboard') }}" class="btn btn-outline"><span class="ms">explore</span>Explore treks</a>
+</div>
+
+{% if bookings %}
+<div class="table-shell table-scroll">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Trek</th>
+                <th>Dates</th>
+                <th>Booked on</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td class="cell-strong">{{ booking.trek.name }}</td>
+                <td class="table-muted">{{ booking.trek.start_date.strftime('%d %b %Y') }}</td>
+                <td class="table-muted">{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                <td>{{ status_badge(booking.status.value) }}</td>
+                <td>
+                    <div class="table-actions">
+                        {% if booking.status.value == 'Booked' %}
+                        <form class="inline-form" method="post" action="{{ url_for('trekker.cancel_booking', booking_id=booking.id) }}">
+                            <button class="btn btn-danger btn-sm"><span class="ms">event_busy</span>Cancel booking</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card empty-state">
+    <span class="ms">receipt_long</span>
+    You have no booking history yet.
+</div>
+{% endif %}
+{% endblock %}
